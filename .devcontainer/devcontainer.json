@@ -1,0 +1,80 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.194.3/containers/docker-existing-docker-compose
+// If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
+// 参考：
+//   https://zenn.dev/satococoa/articles/e4e013fd0c7e5c
+//   https://qiita.com/jjjkkkjjj/items/3b111e4768e740c5cd24
+{
+    "name": "Python with docker compose",
+    // Update the 'dockerComposeFile' list if you have more compose files or use different names.
+    // The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    // The 'service' property is the name of the service for the container that VS Code should
+    // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+    "service": "app",
+    // The optional 'workspaceFolder' property is the path VS Code should open by default when
+    // connected. This is typically a file mount in .devcontainer/docker-compose.yml
+    "workspaceFolder": "/code/",
+    // コンテナ接続時の設定を上書き
+    "settings": {
+        // デフォルトでbashのターミナルを起動させる
+        // https://qiita.com/tt4q/items/8a0e4c31f13279db0d65
+        "terminal.integrated.defaultProfile.linux": "bash",
+        // ↑のコマンドに指定出来るコマンドを列挙する
+        "terminal.integrated.profiles.linux": {
+            "bash": {
+                "path": "bash",
+                "icon": "terminal-bash"
+            },
+            "zsh": {
+                "path": "zsh"
+            },
+            "fish": {
+                "path": "fish"
+            },
+            "tmux": {
+                "path": "tmux",
+                "icon": "terminal-tmux"
+            },
+            "pwsh": {
+                "path": "pwsh",
+                "icon": "terminal-powershell"
+            }
+        },
+        "python.pythonPath": "/root/.cache/pypoetry/virtualenvs/disaster-messaging-hjPiGOLl-py3.11/bin"
+    },
+    // コンテナ起動時に自動で有効化されるVSCodeの拡張機能
+    "extensions": [
+        "fabiospampinato.vscode-diff",
+        "bierner.markdown-preview-github-styles",
+        "bmalehorn.shell-syntax",
+        "donjayamanne.githistory",
+        "cschleiden.vscode-github-actions",
+        "eamodio.gitlens",
+        "ecmel.vscode-html-css",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-complete-tag",
+        "formulahendry.auto-rename-tag",
+        "geyao.html-snippets",
+        "GitHub.vscode-pull-request-github",
+        "Gruntfuggly.todo-tree",
+        "ionutvmi.path-autocomplete",
+        "kaiwood.endwise",
+        "littlefoxteam.vscode-python-test-adapter",
+        "mhutchie.git-graph",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "sohamkamani.code-eol",
+        "streetsidesoftware.code-spell-checker",
+        "VisualStudioExptTeam.intellicode-api-usage-examples",
+        "vscode-icons-team.vscode-icons",
+        "vscode-snippet.snippet",
+        "njpwerner.autodocstring",
+        "oderwat.indent-rainbow",
+        "fusiondev.new-zenkaku",
+        "mosapride.zenkaku",
+        "hbenl.vscode-test-explorer"
+    ]
+}

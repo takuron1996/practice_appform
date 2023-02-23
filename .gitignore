@@ -1,0 +1,8 @@
+.DS_Store
+__pycache__/
+.env
+.env.prod
+cache
+pylintresult.txt
+.coverage
+data/*
