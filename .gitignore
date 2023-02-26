@@ -6,3 +6,4 @@ cache
 pylintresult.txt
 .coverage
 data/*
+output
