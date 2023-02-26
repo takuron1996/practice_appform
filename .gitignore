@@ -7,3 +7,4 @@ pylintresult.txt
 .coverage
 data/*
 output
+htmlcov
