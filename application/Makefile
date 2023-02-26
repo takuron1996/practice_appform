@@ -26,6 +26,8 @@ install:
 update:
 	$(DOCKER) poetry update
 
+test: format
+	$(DOCKER) poetry run pytest --cov -vv --cov-report=html
 
 docs:
 	$(DOCKER) poetry run pdoc application --html -o $(DOCS) --force

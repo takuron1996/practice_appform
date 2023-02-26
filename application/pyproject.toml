@@ -22,6 +22,7 @@ black = "^22.10.0"
 isort = "^5.10.1"
 pdoc3 = "^0.10.0"
 mypy = "^0.991"
+pytest-mock = "^3.10.0"
 
 
 [build-system]
@@ -49,6 +50,7 @@ exclude = '''
 )
 '''
 
+# 型チェックの設定
 [tool.mypy]
 packages = ["application"]
 ignore_missing_imports = true
@@ -56,6 +58,7 @@ disallow_untyped_defs = true
 check_untyped_defs = true
 
 
+# logの設定
 [logging]
 version = 1
 [logging.formatters.simple]
@@ -89,3 +92,31 @@ propagate = "no"
 level = "DEBUG"
 handlers = ["consoleHandler","errorHandler"]
 propagate = "no"
+
+# pytest.iniの設定
+[tool.pytest.ini_options]
+addopts = "-ra -p no:cacheprovider --strict-config --strict-markers"
+
+# .coveragercの設定
+[tool.coverage.run]
+branch = true
+source = ["common/"]
+omit = ["manage.py"]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "if self\\.debug",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if 0:",
+  "if __name__ == .__main__.:",
+  "@(abc\\.)?abstractmethod",
+]
+ignore_errors = true
+
+
+[tool.coverage.html]
+directory = "htmlcov"
