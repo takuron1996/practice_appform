@@ -1,4 +1,4 @@
-"""依存関係定義用のモジュール"""
+"""DI定義用のモジュール"""
 import boto3
 import injector
 
