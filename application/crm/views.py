@@ -54,4 +54,4 @@ class SmsView(APIView):
             "+81" + serializer.validated_data["phone_number"],
             serializer.validated_data["message"],
         )
-        return Response({message_id: message_id}, status=status.HTTP_200_OK)
+        return Response({"message_id": message_id}, status=status.HTTP_200_OK)

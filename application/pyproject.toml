@@ -24,6 +24,7 @@ isort = "^5.10.1"
 pdoc3 = "^0.10.0"
 mypy = "^0.991"
 pytest-mock = "^3.10.0"
+pytest-django = "^4.5.2"
 
 
 [build-system]
@@ -101,8 +102,8 @@ addopts = "-ra -p no:cacheprovider --strict-config --strict-markers"
 # .coveragercの設定
 [tool.coverage.run]
 branch = true
-source = ["common/"]
-omit = ["manage.py"]
+source = ["common/", "crm"]
+omit = ["manage.py", "*/tests/*"]
 
 [tool.coverage.report]
 # Regexes for lines to exclude from consideration
