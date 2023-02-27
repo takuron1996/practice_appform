@@ -50,10 +50,10 @@ class SmsView(APIView):
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
 
-        client = boto3.client("sns", region_name="ap-northeast-1")
-        sms = SnsWrapper(client)
+        sns_resource = boto3.resource("sns", region_name="ap-northeast-1")
+        sms = SnsWrapper(sns_resource)
         message_id = sms.publish_text_message(
-            serializer.validated_data["phone_number"],
+            "+81"+serializer.validated_data["phone_number"],
             serializer.validated_data["message"],
         )
         return Response({message_id: message_id}, status=status.HTTP_200_OK)
