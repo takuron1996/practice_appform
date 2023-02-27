@@ -1,12 +1,13 @@
-import boto3
 from drf_spectacular.utils import (OpenApiExample, OpenApiResponse,
                                    extend_schema)
+from injector import inject
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from common.sms import SnsWrapper
 
+from .injectors import SnsDependencies, injector_instance
 from .serializers import SmsSerializer
 
 
@@ -49,11 +50,10 @@ class SmsView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
-
-        sns_resource = boto3.resource("sns", region_name="ap-northeast-1")
+        sns_resource = injector_instance.get(SnsDependencies)
         sms = SnsWrapper(sns_resource)
         message_id = sms.publish_text_message(
-            "+81"+serializer.validated_data["phone_number"],
+            "+81" + serializer.validated_data["phone_number"],
             serializer.validated_data["message"],
         )
         return Response({message_id: message_id}, status=status.HTTP_200_OK)
