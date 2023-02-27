@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from common.sms import SnsWrapper
 
-from .injectors import SnsDependencies, injector_instance
+from .injectors import injector
 from .serializers import SmsSerializer
 
 
@@ -49,8 +49,7 @@ class SmsView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
-        sns_resource = injector_instance.get(SnsDependencies)
-        sms = SnsWrapper(sns_resource)
+        sms = injector.get(SnsWrapper)
         message_id = sms.publish_text_message(
             "+81" + serializer.validated_data["phone_number"],
             serializer.validated_data["message"],

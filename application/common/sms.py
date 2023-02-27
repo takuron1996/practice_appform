@@ -9,7 +9,9 @@
 
 from logging import Logger, getLogger
 
+import boto3
 from botocore.exceptions import ClientError
+from injector import inject
 
 from common.constant import LoggerName
 
@@ -17,10 +19,18 @@ application_logger: Logger = getLogger(LoggerName.APPLICATION.value)
 emergency_logger: Logger = getLogger(LoggerName.EMERGENCY.value)
 
 
+class SnsResource:
+    """SNSのResource用のクラス"""
+
+    def __init__(self):
+        self.sns_resource = boto3.resource("sns", region_name="ap-northeast-1")
+
+
 class SnsWrapper:
     """Encapsulates Amazon SNS topic and subscription functions."""
 
-    def __init__(self, sns_resource):
+    @inject
+    def __init__(self, sns_resource: SnsResource):
         """
         :param sns_resource: A Boto3 Amazon SNS resource.
         """

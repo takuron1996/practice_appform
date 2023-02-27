@@ -1,12 +1,17 @@
 """DI定義用のモジュール"""
-import boto3
-import injector
+from injector import Injector, Module
+
+from common.sms import SnsResource, SnsWrapper
 
 
-class SnsDependencies:
-    def __init__(self):
-        self.sns_resource = boto3.resource("sns", region_name="ap-northeast-1")
+class SnsWrapperModule(Module):
+    def configure(self, binder):
+        binder.bind(SnsWrapper)
 
 
-injector_instance = injector.Injector()
-injector_instance.binder.bind(SnsDependencies, SnsDependencies().sns_resource)
+class SnsResourceModule(Module):
+    def configure(self, binder):
+        binder.bind(SnsResource, to=SnsResource().sns_resource)
+
+
+injector = Injector([SnsWrapperModule(), SnsResourceModule()])
