@@ -26,11 +26,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEYを.envから取得
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# DEBUGを.envから取得
-# envファイルにTrue、Falseと書くとDjangoがString型と認識
-# envには0か1を記載し、intに変換した後にboolに変換
-DEBUG = bool(int(os.environ.get("DEBUG", 0)))
-
 # ALLOWED_HOSTSを.envから取得
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split()
 
