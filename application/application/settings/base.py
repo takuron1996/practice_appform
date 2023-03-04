@@ -38,17 +38,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-    ],
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    ]
 }
 
-SPECTACULAR_SETTINGS = {
-    "TITLE": "プロジェクト名",
-    "DESCRIPTION": "詳細",
-    "VERSION": "1.0.0",
-    # オプション
-    # 'SERVE_INCLUDE_SCHEMA': False,
-}
 
 
 INSTALLED_APPS = [
@@ -59,7 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "drf_spectacular",
+    "crm.apps.CrmConfig"
 ]
 
 MIDDLEWARE = [
@@ -71,8 +63,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-ROOT_URLCONF = "application.urls"
 
 TEMPLATES = [
     {
