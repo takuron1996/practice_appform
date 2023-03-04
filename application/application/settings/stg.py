@@ -5,4 +5,4 @@ from .base import *
 
 DEBUG = False
 
-injector.binder.injector(StgModule())
+injector.binder.install(StgModule())
