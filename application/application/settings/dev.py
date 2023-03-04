@@ -1,7 +1,8 @@
 """DEV環境用の設定"""
 
+from crm.injectors import DevModule, injector
+
 from .base import *
-from crm.injectors import injector, DevModule
 
 DEBUG = True
 

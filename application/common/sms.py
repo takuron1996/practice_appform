@@ -25,7 +25,6 @@ class SnsResource:
         self.sns_resource = sns_resource
 
 
-
 class SnsWrapper:
     """Encapsulates Amazon SNS topic and subscription functions."""
 
