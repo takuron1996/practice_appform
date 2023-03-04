@@ -42,7 +42,6 @@ REST_FRAMEWORK = {
 }
 
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -51,7 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "crm.apps.CrmConfig"
+    "crm.apps.CrmConfig",
 ]
 
 MIDDLEWARE = [

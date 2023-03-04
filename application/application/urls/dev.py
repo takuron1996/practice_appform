@@ -1,9 +1,10 @@
 """Dev環境用のURL"""
 
-from application.urls.base import urlpatterns
 from django.urls import path
 from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
                                    SpectacularSwaggerView)
+
+from application.urls.base import urlpatterns
 
 urlpatterns += [
     # Swagger
