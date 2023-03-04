@@ -17,7 +17,7 @@ def mock_sns_resouce_success():
     """
     sms = Mock()
     sms.meta.client.publish.return_value = {"MessageId": "success"}
-    return sms
+    return SnsResource(sms)
 
 
 def test_sms_view(api_client, mock_sns_resouce_success):
