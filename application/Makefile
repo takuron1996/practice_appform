@@ -5,6 +5,7 @@ DOCKER = docker exec $(CONTAINER_NAME)
 PYLINT = $(DOCKER) poetry run pylint
 FORMAT_BLACK = $(DOCKER) poetry run black
 FORMAT_ISORT = $(DOCKER) poetry run isort
+RUN_DJANGO = $(DOCKER) poetry run python manage.py
 LINTRCF	= pylintrc.txt
 LINTRST = pylintresult.txt
 DOCS = docs
@@ -19,6 +20,12 @@ lint: format
 format:
 	@$(FORMAT_BLACK) .
 	@$(FORMAT_ISORT) .
+
+makemigrations:
+	$(RUN_DJANGO) makemigrations
+
+migrate:
+	$(RUN_DJANGO) migrate
 
 install:
 	$(DOCKER) poetry install
