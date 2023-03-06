@@ -4,10 +4,9 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r"login", views.LoginViewSet, basename="login")
-# router.register(r"sms", views.SmsViewSet, basename="sms")
+router.register(r"", views.LoginViewSet, basename="login")
 
 urlpatterns = [
-    path("login/", include(router.urls)),
+    path("", include(router.urls)),
     path("sms/", views.SmsView.as_view(), name="sms"),
 ]
