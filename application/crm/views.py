@@ -1,13 +1,23 @@
-from drf_spectacular.utils import (OpenApiExample, OpenApiResponse,
-                                   extend_schema)
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiResponse,
+    extend_schema,
+)
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from common.sms import SnsWrapper
-
+from rest_framework.viewsets import ViewSet
 from .injectors import injector
-from .serializers import SmsSerializer
+from .serializers import SmsSerializer, LoginSerializer
+from common.constant import LoggerName
+from logging import getLogger
+from rest_framework.decorators import action
+from django.contrib.auth import login, logout, authenticate
+from common.utils import get_client_ip
+from django.http import JsonResponse
+from crm.models import User
 
 
 @extend_schema(
@@ -55,3 +65,31 @@ class SmsView(APIView):
             serializer.validated_data["message"],
         )
         return Response({"message_id": message_id}, status=status.HTTP_200_OK)
+
+
+class LoginViewSet(ViewSet):
+    """ログイン関連のView"""
+
+    serializer_class = LoginSerializer
+    application_logger = getLogger(LoggerName.APPLICATION.value)
+    emergency_logger = getLogger(LoggerName.EMERGENCY.value)
+
+    @action(methods=["post"], detail=False, permission_classes=[])
+    def login(self, request):
+        """ログイン機能"""
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user: User = authenticate(**serializer.data)
+        if not user:
+            self.application_logger.warning(
+                f"ログイン失敗:{serializer.data.get('employee_number')}, IP: {get_client_ip(request)}"
+            )
+            return JsonResponse(
+                data={"msg": "ユーザーまたはパスワードが間違っています。"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        login(request, user)
+        self.application_logger.info(
+            f"ログイン成功: {user}, IP: {get_client_ip(request)}"
+        )
+        return JsonResponse(data={"role": user.Role(user.role).name})

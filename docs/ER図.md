@@ -6,15 +6,16 @@ ER図
 
 ```mermaid
 erDiagram
-    %% ユーザ情報
+    %% システムユーザ
     user{
-        id varchar pk "主キー"
+        id uuid pk "主キー"
         employee_number varchar "社員番号: unique"
         name varchar "名前"
         password varchar "パスワード"
         email varchar "メールアドレス"
-        role enum "一般、承認者"
+        role int "一般(1)、承認者(2)"
         vertifid bool "検証済み"
+        last_login timesstamp "最終ログイン日時（デフォルト）"
     }
 
     %%メッセージ履歴

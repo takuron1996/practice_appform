@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: containers/postgres/Dockerfile
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -U "${POSTGRES_USER:-postgres}" || exit 1
       interval: 10s
@@ -41,6 +41,10 @@ services:
       - "4566:4566"
     env_file:
       - .env
+
+volumes:
+  db_data:
+
 
 networks:
   default:
