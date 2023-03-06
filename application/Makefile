@@ -27,6 +27,9 @@ makemigrations:
 migrate:
 	$(RUN_DJANGO) migrate
 
+loaddata:
+	$(RUN_DJANGO) loaddata crm.json
+
 install:
 	$(DOCKER) poetry install
 

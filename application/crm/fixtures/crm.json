@@ -1,0 +1,15 @@
+[
+    {
+        "model": "crm.User",
+        "id": "e7066567-87bd-4ce7-8c8c-d9f2f9fb3116",
+        "fields": {
+            "employee_number": "00000001",
+            "name": "テスト管理　ユーザー01",
+            "password": "pbkdf2_sha256$390000$sYXKzhzYotYneF2hHTeW8D$OGhiETWYjUvvJzSFxWeFUDySKealVwrxbM2+fgJmcvo=",
+            "email": "test_management_one@gmail.com",
+            "role": 1,
+            "verified": true,
+            "last_login": null
+        }
+    }
+]

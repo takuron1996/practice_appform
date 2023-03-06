@@ -1,23 +1,22 @@
-from drf_spectacular.utils import (
-    OpenApiExample,
-    OpenApiResponse,
-    extend_schema,
-)
+from logging import getLogger
+
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from drf_spectacular.utils import (OpenApiExample, OpenApiResponse,
+                                   extend_schema)
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from common.sms import SnsWrapper
 from rest_framework.viewsets import ViewSet
-from .injectors import injector
-from .serializers import SmsSerializer, LoginSerializer
+
 from common.constant import LoggerName
-from logging import getLogger
-from rest_framework.decorators import action
-from django.contrib.auth import login, logout, authenticate
+from common.sms import SnsWrapper
 from common.utils import get_client_ip
-from django.http import JsonResponse
 from crm.models import User
+
+from .injectors import injector
+from .serializers import LoginSerializer, SmsSerializer
 
 
 @extend_schema(

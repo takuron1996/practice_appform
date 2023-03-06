@@ -24,20 +24,37 @@ class SmsSerializer(serializers.Serializer):
     """送信するメッセージ"""
 
 
-class UserSerializer(serializers.Serializer):
+# class UserSerializer(serializers.Serializer):
+#     """ユーザ用のシリアライザ"""
+
+#     class Meta:
+#         model = User
+#         fields = [
+#             "id",
+#             "employee_number",
+#             "name",
+#             "email",
+#             "role",
+#             "verified",
+#             "last_login",
+#         ]
+#         read_only_fields = [
+#             "id",
+#             "employee_number",
+#             "name",
+#             "email",
+#             "role",
+#             "verified",
+#             "last_login",
+#         ]
+
+
+class UserSerializer(serializers.ModelSerializer):
     """ユーザ用のシリアライザ"""
 
     class Meta:
         model = User
-        fields = [
-            "id",
-            "employee_number",
-            "name",
-            "email",
-            "role",
-            "verified",
-            "last_login",
-        ]
+        fields = "__all__"
         read_only_fields = [
             "id",
             "employee_number",

@@ -7,4 +7,4 @@ pylintresult.txt
 .coverage
 output
 htmlcov
-application/crm/migrations/
+migrations/
