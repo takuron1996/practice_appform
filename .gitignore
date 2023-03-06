@@ -5,6 +5,6 @@ __pycache__/
 cache
 pylintresult.txt
 .coverage
-data/*
 output
 htmlcov
+migrations/*
