@@ -63,6 +63,10 @@ class UserSerializer(serializers.ModelSerializer):
             "role",
             "verified",
             "last_login",
+            "is_superuser",
+            "is_staff",
+            "is_active",
+            "password",
         ]
 
 

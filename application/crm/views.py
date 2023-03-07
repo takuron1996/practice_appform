@@ -1,7 +1,7 @@
 from logging import getLogger
 
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from drf_spectacular.utils import (OpenApiExample, OpenApiResponse,
                                    extend_schema)
 from rest_framework import status
@@ -73,6 +73,33 @@ class LoginViewSet(ViewSet):
     application_logger = getLogger(LoggerName.APPLICATION.value)
     emergency_logger = getLogger(LoggerName.EMERGENCY.value)
 
+    @extend_schema(
+        request=LoginSerializer,
+        examples=[
+            OpenApiExample(
+                "ログイン",
+                summary="ログイン",
+                value={"employee_number": "00000001", "password": "test"},
+                request_only=True,
+                response_only=False,
+                description="一般ユーザ",
+            )
+        ],
+        responses=OpenApiResponse(
+            status.HTTP_200_OK,
+            description="ロールの種類",
+            examples=[
+                OpenApiExample(
+                    "role",
+                    summary="role",
+                    value={"role": "GENERAL"},
+                    request_only=False,
+                    response_only=True,
+                    description="一般ロール",
+                )
+            ],
+        ),
+    )
     @action(methods=["post"], detail=False, permission_classes=[])
     def login(self, request):
         """ログイン機能"""
@@ -92,3 +119,13 @@ class LoginViewSet(ViewSet):
             f"ログイン成功: {user}, IP: {get_client_ip(request)}"
         )
         return JsonResponse(data={"role": user.Role(user.role).name})
+
+    @extend_schema(request=None, responses={status.HTTP_200_OK: None})
+    @action(methods=["post"], detail=False, permission_classes=[])
+    def logout(self, request):
+        """ログアウト"""
+        self.application_logger.info(
+            f"ログアウト: {request.user}, IP: {get_client_ip(request)}"
+        )
+        logout(request)
+        return HttpResponse(status=status.HTTP_200_OK)
