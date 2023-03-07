@@ -9,6 +9,9 @@
             "email": "test_general_one@gmail.com",
             "role": 1,
             "verified": true,
+            "is_active": true,
+            "is_staff": true,
+            "is_superuser": true,
             "last_login": null
         }
     }

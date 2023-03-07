@@ -45,9 +45,6 @@ class User(AbstractUser):
     date_joined = None
     groups = None
     username = None
-    is_active = None
-    is_staff = None
-    is_superuser = None
 
     USERNAME_FIELD = "employee_number"
     """認証に使用されるユーザー名のフィールドを指定"""
