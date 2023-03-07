@@ -100,6 +100,9 @@ propagate = "no"
 [tool.pytest.ini_options]
 addopts = "-ra -p no:cacheprovider --strict-config --strict-markers"
 
+[tool.pytest]
+DJANGO_SETTINGS_MODULE = "application.settings.dev"
+
 # .coveragercの設定
 [tool.coverage.run]
 branch = true
