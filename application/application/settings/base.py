@@ -14,7 +14,22 @@ import os
 from logging.config import dictConfig
 from pathlib import Path
 
+from pydantic import BaseSettings
+
 from common.conf import ConfFile
+
+
+class VariableSettings(BaseSettings):
+    """環境変数を取得する設定クラス"""
+
+    SECRET_KEY: str
+    DJANGO_ALLOWED_HOSTS: str
+    POSTGRES_NAME: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+
+
+settings = VariableSettings()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,10 +41,10 @@ AUTH_USER_MODEL = "crm.User"
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECRET_KEYを.envから取得
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = settings.SECRET_KEY
 
 # ALLOWED_HOSTSを.envから取得
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split()
+ALLOWED_HOSTS = settings.DJANGO_ALLOWED_HOSTS.split()
 
 
 # Application definition
@@ -94,9 +109,9 @@ WSGI_APPLICATION = "application.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_NAME"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "NAME": settings.POSTGRES_NAME,
+        "USER": settings.POSTGRES_USER,
+        "PASSWORD": settings.POSTGRES_PASSWORD,
         "HOST": "db",
         "PORT": 5432,
     }
@@ -142,10 +157,3 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-# ログ設定
-output_path = Path("output")
-if not output_path.exists():
-    output_path.mkdir()
-dictConfig(ConfFile.get()["logging"])
