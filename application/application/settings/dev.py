@@ -1,11 +1,11 @@
 """DEV環境用の設定"""
-from crm.injectors import StgModule, injector
+from crm.injectors import DevModule, injector
 
 from .base import *
 
 DEBUG = False
 ROOT_URLCONF = "application.urls.base"
-injector.binder.install(StgModule())
+injector.binder.install(DevModule())
 
 # ログ設定
 output_path = Path("output")

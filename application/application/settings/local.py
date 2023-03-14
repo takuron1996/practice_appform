@@ -1,6 +1,6 @@
 """LOCAL環境用の設定"""
 
-from crm.injectors import DevModule, injector
+from crm.injectors import LocalModule, injector
 
 from .base import *
 
@@ -22,7 +22,7 @@ INSTALLED_APPS += ["drf_spectacular"]
 
 ROOT_URLCONF = "application.urls.local"
 
-injector.binder.install(DevModule())
+injector.binder.install(LocalModule())
 
 # ログ設定
 output_path = Path("output")

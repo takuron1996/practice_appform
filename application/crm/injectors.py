@@ -10,8 +10,8 @@ class SnsWrapperModule(Module):
         binder.bind(SnsWrapper)
 
 
-class DevModule(Module):
-    """DEV環境用のモジュール"""
+class LocalModule(Module):
+    """Local環境用のモジュール"""
 
     def configure(self, binder: Binder) -> None:
         sns_resource = SnsResource(
@@ -24,8 +24,8 @@ class DevModule(Module):
         binder.bind(SnsResource, to=sns_resource)
 
 
-class StgModule(Module):
-    """STG環境用のモジュール"""
+class DevModule(Module):
+    """Dev環境用のモジュール"""
 
     def configure(self, binder: Binder) -> None:
         sns_resource = SnsResource(
