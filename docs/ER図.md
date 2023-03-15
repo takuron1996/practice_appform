@@ -33,4 +33,14 @@ erDiagram
 
     message_template ||--o{ message_history : "メッセージテンプレート1に対してメッセージ履歴は複数"
     message_history ||--o{ user : "ユーザ1に対してメッセージ履歴は複数"
+
+    %%顧客情報
+    customer {
+        id varchar pk "主キー"
+        name varchar "名前"
+        birth_of_date date "生年月日"
+        phone_number varchar "電話番号"
+        created_at timestamptz "生成時刻"
+    }
+
 ```
