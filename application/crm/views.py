@@ -16,7 +16,7 @@ from common.utils import get_client_ip
 from crm.injectors import injector
 from crm.models import Customer, User
 from crm.serializers import CustomerSerializer, LoginSerializer, SmsSerializer
-
+from crm.filters import CustomerFilter
 
 @extend_schema(
     request=SmsSerializer,
@@ -178,3 +178,4 @@ class CustomerViewSet(
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     permission_classes = [AllowAny]
+    filterset_class = CustomerFilter

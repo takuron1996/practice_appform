@@ -1,20 +1,24 @@
 """Djangoのfiltersの定義用モジュール"""
 
-import django_filters
+from django_filters import DateTimeFilter, FilterSet
 
-from crm.models import User
+from crm.models import Customer
 
 
-class UserFilter(django_filters.FilterSet):
-    """ユーザ用のフィルター"""
+class CustomerFilter(FilterSet):
+    """顧客情報のフィルタ"""
 
-    name = django_filters.CharFilter(field_name="name", lookup_expr="contains")
-    """名前"""
-
-    employee_number = django_filters.CharFilter(
-        field_name="employee_number", lookup_expr="contains"
-    )
-    """社員番号"""
+    created_at_min = DateTimeFilter(field_name="created_at", lookup_expr="gte")
+    """生成時刻の下限"""
+    created_at_max = DateTimeFilter(field_name="created_at", lookup_expr="lte")
+    """生成時刻の上限"""
 
     class Meta:
-        model = User
+        model = Customer
+        fields = [
+            "name",
+            "birth_of_date",
+            "phone_number",
+            "created_at_min",
+            "created_at_max",
+        ]
