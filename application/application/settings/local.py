@@ -1,5 +1,8 @@
 """LOCAL環境用の設定"""
 
+from logging.config import dictConfig
+
+from common.conf import ConfFile
 from crm.injectors import LocalModule, injector
 
 from .base import *
