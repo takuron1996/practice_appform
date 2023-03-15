@@ -2,9 +2,6 @@
 
 # 準備
 - .envの生成
-- .env.prodの生成
-- data/db の生成
-- staticの生成
 
 ## env
 ```env
