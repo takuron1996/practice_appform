@@ -14,5 +14,25 @@
             "is_superuser": true,
             "last_login": null
         }
+    },
+    {
+        "model": "crm.Customer",
+        "fields": {
+            "id": "01GVJWMBN4Y2J4NW92CYJZVT7E",
+            "phone_number": "09051321996",
+            "name": "池上 拓",
+            "birth_of_date": "1996-05-04",
+            "created_at": "2023-03-16T00:01:18.137946+09:00"
+        }
+    },
+    {
+        "model": "crm.Customer",
+        "fields": {
+            "id": "01GVJWSKTVQV9ES3JRCCT935V4",
+            "phone_number": "00000000000",
+            "name": "taku ikegami",
+            "birth_of_date": "1968-02-22",
+            "created_at": "2023-03-16T00:04:10.338757+09:00"
+        }
     }
 ]

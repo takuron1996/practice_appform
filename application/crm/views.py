@@ -6,6 +6,7 @@ from drf_spectacular.utils import (OpenApiExample, OpenApiResponse,
                                    extend_schema)
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
@@ -15,7 +16,6 @@ from common.utils import get_client_ip
 from crm.injectors import injector
 from crm.models import Customer, User
 from crm.serializers import CustomerSerializer, LoginSerializer, SmsSerializer
-from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 @extend_schema(
@@ -45,7 +45,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
         ],
     ),
 )
-class SmsView(ViewSet):
+class SmsViewSet(ViewSet):
     """SMS関連のView"""
 
     serializer_class = SmsSerializer
@@ -73,7 +73,7 @@ class LoginViewSet(ViewSet):
     serializer_class = LoginSerializer
     application_logger = getLogger(LoggerName.APPLICATION.value)
     emergency_logger = getLogger(LoggerName.EMERGENCY.value)
-    permission_classes=[AllowAny]
+    permission_classes = [AllowAny]
 
     @extend_schema(
         request=LoginSerializer,
@@ -133,6 +133,43 @@ class LoginViewSet(ViewSet):
         return HttpResponse(status=status.HTTP_200_OK)
 
 
+@extend_schema(
+    request=CustomerSerializer,
+    examples=[
+        OpenApiExample(
+            "customer",
+            summary="顧客情報登録",
+            value={
+                "phone_number": "09051321996",
+                "name": "池上 拓",
+                "birth_of_date": "1996-05-04",
+            },
+            request_only=True,
+            response_only=False,
+            description="顧客情報登録",
+        )
+    ],
+    responses=OpenApiResponse(
+        status.HTTP_200_OK,
+        description="顧客情報",
+        examples=[
+            OpenApiExample(
+                "message_id",
+                summary="message_id",
+                value={
+                    "id": "01GVJWMBN4Y2J4NW92CYJZVT7E",
+                    "phone_number": "09051321996",
+                    "name": "池上 拓",
+                    "birth_of_date": "1996-05-04",
+                    "created_at": "2023-03-16T00:01:18.137946+09:00",
+                },
+                request_only=False,
+                response_only=True,
+                description="顧客情報",
+            )
+        ],
+    ),
+)
 class CustomerViewSet(
     mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
 ):
@@ -140,4 +177,4 @@ class CustomerViewSet(
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes=[AllowAny]
+    permission_classes = [AllowAny]
