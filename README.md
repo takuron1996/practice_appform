@@ -26,18 +26,3 @@ AWS_SECRET_ACCESS_KEY="localstack"
 ## 環境を指定（ローカル環境）
 DJANGO_SETTINGS_MODULE=application.settings.local
 ```
-
-## env.prod
-```env.prod
-# POSTGRES_NAME="任意のデータベース名"
-# POSTGRES_USER="任意のユーザ名"
-# POSTGRES_PASSWORD="任意のパスワード"
-POSTGRES_NAME=postgres
-POSTGRES_USER=postgres-prod
-POSTGRES_PASSWORD=postgres-prod
-# SECRET_KEYは任意
-SECRET_KEY="postgres"
-DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-# 本番環境のためTrue
-DEBUG=0
-```
