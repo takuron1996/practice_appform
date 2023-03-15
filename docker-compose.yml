@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: containers/python/Dockerfile
-    command: poetry run python manage.py runserver 0.0.0.0:8000
+    command: sh -c "/usr/local/bin/entrypoint.sh"
     env_file:
       - .env
     volumes:
