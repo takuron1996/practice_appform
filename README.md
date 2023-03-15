@@ -17,8 +17,14 @@ POSTGRES_PASSWORD=postgres
 # SECRET_KEYは任意
 SECRET_KEY="postgres"
 DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-# 開発環境のためTrue
-DEBUG=1
+
+# AWS
+# SMS用のIAMロール
+AWS_ACCESS_KEY_ID="localstack"
+AWS_SECRET_ACCESS_KEY="localstack"
+
+## 環境を指定（ローカル環境）
+DJANGO_SETTINGS_MODULE=application.settings.local
 ```
 
 ## env.prod
