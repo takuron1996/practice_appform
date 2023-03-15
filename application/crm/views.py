@@ -4,19 +4,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
 from drf_spectacular.utils import (OpenApiExample, OpenApiResponse,
                                    extend_schema)
-from rest_framework import status
+from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 
 from common.constant import LoggerName
 from common.sms import SnsWrapper
 from common.utils import get_client_ip
-from crm.models import User
-
-from .injectors import injector
-from .serializers import LoginSerializer, SmsSerializer
+from crm.injectors import injector
+from crm.models import Customer, User
+from crm.serializers import CustomerSerializer, LoginSerializer, SmsSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 @extend_schema(
@@ -46,12 +45,14 @@ from .serializers import LoginSerializer, SmsSerializer
         ],
     ),
 )
-class SmsView(APIView):
+class SmsView(ViewSet):
     """SMS関連のView"""
 
     serializer_class = SmsSerializer
+    permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    @action(methods=["post"], detail=False)
+    def sms(self, request):
         """SMSの送信処理"""
         serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid():
@@ -72,6 +73,7 @@ class LoginViewSet(ViewSet):
     serializer_class = LoginSerializer
     application_logger = getLogger(LoggerName.APPLICATION.value)
     emergency_logger = getLogger(LoggerName.EMERGENCY.value)
+    permission_classes=[AllowAny]
 
     @extend_schema(
         request=LoginSerializer,
@@ -100,7 +102,7 @@ class LoginViewSet(ViewSet):
             ],
         ),
     )
-    @action(methods=["post"], detail=False, permission_classes=[])
+    @action(methods=["post"], detail=False)
     def login(self, request):
         """ログイン機能"""
         serializer = self.serializer_class(data=request.data)
@@ -121,7 +123,7 @@ class LoginViewSet(ViewSet):
         return JsonResponse(data={"role": user.Role(user.role).name})
 
     @extend_schema(request=None, responses={status.HTTP_200_OK: None})
-    @action(methods=["post"], detail=False, permission_classes=[])
+    @action(methods=["post"], detail=False)
     def logout(self, request):
         """ログアウト"""
         self.application_logger.info(
@@ -129,3 +131,13 @@ class LoginViewSet(ViewSet):
         )
         logout(request)
         return HttpResponse(status=status.HTTP_200_OK)
+
+
+class CustomerViewSet(
+    mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
+):
+    """顧客情報関連のView"""
+
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes=[AllowAny]

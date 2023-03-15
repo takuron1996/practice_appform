@@ -1,12 +1,13 @@
 from django.urls import include, path
-from rest_framework import routers
+from crm import views
 
-from . import views
+from rest_framework.routers import DefaultRouter
 
-router = routers.DefaultRouter()
+router = DefaultRouter()
 router.register(r"", views.LoginViewSet, basename="login")
+router.register(r"", views.SmsView, basename="sms")
+
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("sms/", views.SmsView.as_view(), name="sms"),
 ]

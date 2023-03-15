@@ -3,7 +3,7 @@
 from django.core.validators import RegexValidator
 from rest_framework import serializers
 
-from crm.models import User
+from crm.models import Customer
 
 
 class SmsSerializer(serializers.Serializer):
@@ -29,3 +29,23 @@ class LoginSerializer(serializers.Serializer):
 
     employee_number = serializers.CharField(max_length=8)
     password = serializers.CharField(max_length=255)
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    """顧客情報用のシリアライザ"""
+
+    phone_regex = RegexValidator(
+        regex=r"^\d+$",
+        message="電話番号の形式は0123456789",
+    )
+    """電話番号(日本)のバリデータ"""
+
+    phone_number = serializers.CharField(
+        validators=[phone_regex], max_length=11
+    )
+    """電話番号(日本)"""
+
+    class Meta:
+        model = Customer
+        fields = "__all__"
+        read_only_fields = ("id", "created_at")
