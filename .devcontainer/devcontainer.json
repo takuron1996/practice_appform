@@ -43,7 +43,7 @@
                 "icon": "terminal-powershell"
             }
         },
-        "python.pythonPath": "/root/.cache/pypoetry/virtualenvs/disaster-messaging-hjPiGOLl-py3.11/bin"
+        "python.pythonPath": "/root/.cache/pypoetry/virtualenvs/practice-appform-MATOk_fk-py3.11"
     },
     // コンテナ起動時に自動で有効化されるVSCodeの拡張機能
     "extensions": [
