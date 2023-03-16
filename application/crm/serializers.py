@@ -28,7 +28,9 @@ class LoginSerializer(serializers.Serializer):
     """ログイン処理用のシリアライザ"""
 
     employee_number = serializers.CharField(max_length=8)
+    """社員番号"""
     password = serializers.CharField(max_length=255)
+    """パスワード"""
 
 
 class CustomerSerializer(serializers.ModelSerializer):

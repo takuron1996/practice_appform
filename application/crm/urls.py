@@ -8,6 +8,10 @@ router.register(r"", views.LoginViewSet, basename="login")
 router.register(r"", views.SmsViewSet, basename="sms")
 router.register(r"customer", views.CustomerViewSet, basename="customer")
 
+health_router = DefaultRouter()
+health_router.register(r"", views.HealthViewSet, basename="health")
+
 urlpatterns = [
-    path("", include(router.urls)),
+    path("", include(health_router.urls)),
+    path("api/", include(router.urls)),
 ]

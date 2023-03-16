@@ -13,10 +13,11 @@ from rest_framework.viewsets import ViewSet
 from common.constant import LoggerName
 from common.sms import SnsWrapper
 from common.utils import get_client_ip
+from crm.filters import CustomerFilter
 from crm.injectors import injector
 from crm.models import Customer, User
 from crm.serializers import CustomerSerializer, LoginSerializer, SmsSerializer
-from crm.filters import CustomerFilter
+
 
 @extend_schema(
     request=SmsSerializer,
@@ -46,7 +47,7 @@ from crm.filters import CustomerFilter
     ),
 )
 class SmsViewSet(ViewSet):
-    """SMS関連のView"""
+    """SMS関連のViewSet"""
 
     serializer_class = SmsSerializer
     permission_classes = [IsAuthenticated]
@@ -68,7 +69,7 @@ class SmsViewSet(ViewSet):
 
 
 class LoginViewSet(ViewSet):
-    """ログイン関連のView"""
+    """ログイン関連のViewSet"""
 
     serializer_class = LoginSerializer
     application_logger = getLogger(LoggerName.APPLICATION.value)
@@ -173,9 +174,18 @@ class LoginViewSet(ViewSet):
 class CustomerViewSet(
     mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
 ):
-    """顧客情報関連のView"""
+    """顧客情報関連のViewSet"""
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     permission_classes = [AllowAny]
     filterset_class = CustomerFilter
+
+
+class HealthViewSet(ViewSet):
+    """ヘルスチェック用のViewSet"""
+
+    @action(methods=["get"], detail=False, permission_classes=[AllowAny])
+    def health(self, request):
+        """ヘルスチェック"""
+        return JsonResponse(data={"status": "pass"}, status=status.HTTP_200_OK)
