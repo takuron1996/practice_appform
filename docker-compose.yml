@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   db:
     container_name: db
@@ -34,18 +33,25 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  # AWSをローカルで検証するためのMockサーバー
   localstack:
     image: localstack/localstack
     container_name: localstack
     ports:
       - "4566:4566"
+    environment:
+      - SERVICES=sns
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
     env_file:
       - .env
-
+    volumes:
+      - localstack_data:/tmp/localstack/data
+      - localstack_bin:/var/lib/localstack
 volumes:
   db_data:
-
-
+  localstack_data:
+  localstack_bin:
 networks:
   default:
     name: testnet
