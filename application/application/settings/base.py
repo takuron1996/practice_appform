@@ -13,18 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-from pydantic import BaseSettings
-
-
-class VariableSettings(BaseSettings):
-    """環境変数を取得する設定クラス"""
-
-    SECRET_KEY: str
-    DJANGO_ALLOWED_HOSTS: str
-    POSTGRES_NAME: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-
+from common.environment import VariableSettings
 
 settings = VariableSettings()
 
