@@ -13,11 +13,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-from common.environment import VariableSettings
+from common.environment import django_settings
 
-settings = VariableSettings()
 
-DEBUG = settings.DEBUG
+DEBUG = django_settings.DEBUG
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,10 +28,10 @@ AUTH_USER_MODEL = "crm.User"
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECRET_KEYを.envから取得
-SECRET_KEY = settings.SECRET_KEY
+SECRET_KEY = django_settings.SECRET_KEY
 
 # ALLOWED_HOSTSを.envから取得
-ALLOWED_HOSTS = settings.DJANGO_ALLOWED_HOSTS.split()
+ALLOWED_HOSTS = django_settings.DJANGO_ALLOWED_HOSTS.split()
 
 
 # Application definition
@@ -100,9 +99,9 @@ WSGI_APPLICATION = "application.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": settings.POSTGRES_NAME,
-        "USER": settings.POSTGRES_USER,
-        "PASSWORD": settings.POSTGRES_PASSWORD,
+        "NAME": django_settings.POSTGRES_NAME,
+        "USER": django_settings.POSTGRES_USER,
+        "PASSWORD": django_settings.POSTGRES_PASSWORD,
         "HOST": "db",
         "PORT": 5432,
     }
