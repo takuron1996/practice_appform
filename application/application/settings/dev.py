@@ -6,7 +6,6 @@ from crm.injectors import DevModule, injector
 
 from .base import *
 
-DEBUG = False
 ROOT_URLCONF = "application.urls.base"
 injector.binder.install(DevModule())
 

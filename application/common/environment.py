@@ -11,5 +11,6 @@ class VariableSettings(BaseSettings):
     POSTGRES_NAME: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
+    DEBUG: bool = False
     AWS_RESION_NAME: str = "ap-northeast-1"
     AWS_ENDPOINT_URL: str = "http://localstack:4566"
