@@ -18,13 +18,18 @@ class DjangoSettings(BaseSettings):
     """PostgreSQLのユーザ名"""
     POSTGRES_PASSWORD: str
     """PostgreSQLのパスワード"""
+    TRUSTED_ORIGINS: str = "http://localhost"
+    """アクセスを許可したいURL"""
+
 
 class AwsSettings(BaseSettings):
     """AWS絡みの環境変数を設定するクラス"""
+
     RESION_NAME: str = "ap-northeast-1"
     """AWSのリージョン"""
     ENDPOINT_URL: str = "http://localstack:4566"
     """ローカルスタックコンテナのURL"""
+
 
 django_settings = DjangoSettings()
 """Django用の環境変数"""

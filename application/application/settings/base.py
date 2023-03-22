@@ -15,7 +15,6 @@ from pathlib import Path
 
 from common.environment import django_settings
 
-
 DEBUG = django_settings.DEBUG
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -61,9 +60,11 @@ INSTALLED_APPS = [
     "rest_framework",
     "crm.apps.CrmConfig",
     "django_filters",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -146,3 +147,8 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CORSの設定
+CORS_ALLOWED_ORIGINS = django_settings.TRUSTED_ORIGINS.split()
+CORS_ALLOW_CREDENTIALS = True
+CORS_PREFLIGHT_MAX_AGE = 60 * 30
