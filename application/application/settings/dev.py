@@ -6,11 +6,8 @@ from crm.injectors import DevModule, injector
 
 from .base import *
 
-ROOT_URLCONF = "application.urls.base"
+
 injector.binder.install(DevModule())
 
 # ログ設定
-output_path = Path("output")
-if not output_path.exists():
-    output_path.mkdir()
 dictConfig(ConfFile.get()["dev"]["logging"])

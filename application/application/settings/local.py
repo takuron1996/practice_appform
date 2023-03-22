@@ -15,13 +15,27 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "プロジェクト名",
     "DESCRIPTION": "詳細",
     "VERSION": "1.0.0",
-    # オプション
-    # 'SERVE_INCLUDE_SCHEMA': False,
 }
 
 INSTALLED_APPS += ["drf_spectacular"]
 
 ROOT_URLCONF = "application.urls.local"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
 
 injector.binder.install(LocalModule())
 
