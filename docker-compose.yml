@@ -16,6 +16,8 @@ services:
       - .env
     ports:
       - "5432:5432" # デバッグ用
+    networks:
+      - practice_appform_app_db
   app:
     container_name: app
     build:
@@ -33,6 +35,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - practice_appform_app_db
+      - practice_appform_app_web
   # AWSをローカルで検証するためのMockサーバー
   localstack:
     image: localstack/localstack
@@ -48,10 +53,25 @@ services:
     volumes:
       - localstack_data:/tmp/localstack/data
       - localstack_bin:/var/lib/localstack
+    networks:
+      - practice_appform_app_web
+  nginx:
+    container_name: web
+    build:
+      context: .
+      dockerfile: containers/nginx/Dockerfile
+    volumes:
+      - ./static:/static
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    networks:
+      - practice_appform_app_web
 volumes:
   db_data:
   localstack_data:
   localstack_bin:
 networks:
-  default:
-    name: testnet
+  practice_appform_app_db:
+  practice_appform_app_web:

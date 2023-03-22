@@ -8,3 +8,4 @@ pylintresult.txt
 output
 htmlcov
 migrations
+tmp
