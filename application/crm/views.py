@@ -206,12 +206,10 @@ class UserViewSet(
     def get_permissions(self):
         match self.action:
             case "list":
-                permission_classes = [AllowAny()]
+                permission_classes = [AllowAny]
             case _:
-                permission_classes = [
-                    OR(OR(IsAdmin(), IsManagement()), IsApprover())
-                ]
-        return permission_classes
+                permission_classes = [IsAdmin | IsManagement | IsApprover]
+        return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
         """ViewSetアクション毎にシリアライザを変更する"""
