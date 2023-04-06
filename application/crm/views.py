@@ -6,17 +6,24 @@ from drf_spectacular.utils import (OpenApiExample, OpenApiResponse,
                                    extend_schema)
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import OR, AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from common.constant import LoggerName
 from common.sms import SnsWrapper
 from common.utils import get_client_ip
+from crm.enums import UserRole
 from crm.filters import CustomerFilter
 from crm.injectors import injector
 from crm.models import Customer, User
-from crm.serializers import CustomerSerializer, LoginSerializer, SmsSerializer
+from crm.permissions import IsAdmin, IsApprover, IsManagement
+from crm.serializers import (CreateUserSerializer, CustomerSerializer,
+                             ListUserSerializer, LoginSerializer,
+                             SmsSerializer)
+
+application_logger = getLogger(LoggerName.APPLICATION.value)
+emergency_logger = getLogger(LoggerName.EMERGENCY.value)
 
 
 @extend_schema(
@@ -72,8 +79,6 @@ class LoginViewSet(ViewSet):
     """ログイン関連のViewSet"""
 
     serializer_class = LoginSerializer
-    application_logger = getLogger(LoggerName.APPLICATION.value)
-    emergency_logger = getLogger(LoggerName.EMERGENCY.value)
     permission_classes = [AllowAny]
 
     @extend_schema(
@@ -90,15 +95,15 @@ class LoginViewSet(ViewSet):
         ],
         responses=OpenApiResponse(
             status.HTTP_200_OK,
-            description="ロールの種類",
+            description="グループの種類",
             examples=[
                 OpenApiExample(
-                    "role",
-                    summary="role",
-                    value={"role": "GENERAL"},
+                    "groups",
+                    summary="groups",
+                    value={"groups": "管理者"},
                     request_only=False,
                     response_only=True,
-                    description="一般ロール",
+                    description="管理者権限",
                 )
             ],
         ),
@@ -110,7 +115,7 @@ class LoginViewSet(ViewSet):
         serializer.is_valid(raise_exception=True)
         user: User = authenticate(**serializer.data)
         if not user:
-            self.application_logger.warning(
+            application_logger.warning(
                 f"ログイン失敗:{serializer.data.get('employee_number')}, IP: {get_client_ip(request)}"
             )
             return JsonResponse(
@@ -118,16 +123,16 @@ class LoginViewSet(ViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         login(request, user)
-        self.application_logger.info(
+        application_logger.info(
             f"ログイン成功: {user}, IP: {get_client_ip(request)}"
         )
-        return JsonResponse(data={"role": user.Role(user.role).name})
+        return JsonResponse(data={"groups": f"{user.groups.name}"})
 
     @extend_schema(request=None, responses={status.HTTP_200_OK: None})
     @action(methods=["post"], detail=False)
     def logout(self, request):
         """ログアウト"""
-        self.application_logger.info(
+        application_logger.info(
             f"ログアウト: {request.user}, IP: {get_client_ip(request)}"
         )
         logout(request)
@@ -189,3 +194,47 @@ class HealthViewSet(ViewSet):
     def health(self, request):
         """ヘルスチェック"""
         return JsonResponse(data={"status": "pass"}, status=status.HTTP_200_OK)
+
+
+class UserViewSet(
+    viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin
+):
+    """ユーザー用のViewSet"""
+
+    queryset = User.objects.all()
+
+    def get_permissions(self):
+        match self.action:
+            case "list":
+                permission_classes = [AllowAny()]
+            case _:
+                permission_classes = [
+                    OR(OR(IsAdmin(), IsManagement()), IsApprover())
+                ]
+        return permission_classes
+
+    def get_serializer_class(self):
+        """ViewSetアクション毎にシリアライザを変更する"""
+
+        match self.action:
+            case "create":
+                return CreateUserSerializer
+            case _:
+                return ListUserSerializer
+
+    def create(self, request, *args, **kwargs):
+        """ユーザーを作成"""
+        serializer = self.get_serializer_class()(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        User.objects.create_user(
+            name=serializer.validated_data["name"],
+            employee_number=serializer.validated_data["employee_number"],
+            password=serializer.validated_data["password"],
+            group=UserRole(serializer.validated_data.get("user_role")),
+        )
+
+        return Response(status=status.HTTP_201_CREATED)
