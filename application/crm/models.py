@@ -1,20 +1,17 @@
 """モデル用のモジュール"""
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.core.validators import RegexValidator
 from django.db import models
 from django_ulid.models import ulid
+
+from crm.managers import UserManager
 
 
 class User(AbstractUser):
     """システムユーザ"""
 
-    class Role(models.IntegerChoices):
-        """ロールの種類"""
-
-        GENERAL = 1
-        """一般"""
-        AUTHORIZER = 2
-        """承認者"""
+    objects = UserManager()
+    """Userモデルクラスとシステム利用者を作成する為のクラスを紐付ける"""
 
     id = models.CharField(
         max_length=26, primary_key=True, default=ulid.new, editable=False
@@ -33,20 +30,18 @@ class User(AbstractUser):
     """氏名"""
     password = models.CharField(max_length=255, verbose_name="パスワード")
     """パスワード"""
-    email = models.CharField(max_length=255, verbose_name="メールアドレス")
-    """メールアドレス"""
-    role = models.PositiveIntegerField(
-        choices=Role.choices, default=Role.GENERAL, verbose_name="ロール"
+    groups = models.ForeignKey(
+        Group, on_delete=models.DO_NOTHING, related_name="users"
     )
-    """ロール"""
+    """システム利用者権限テーブル外部キー"""
     verified = models.BooleanField(default=False, verbose_name="検証情報")
     """検証情報"""
 
     first_name = None
     last_name = None
     date_joined = None
-    groups = None
     username = None
+    email = None
 
     USERNAME_FIELD = "employee_number"
     """認証に使用されるユーザー名のフィールドを指定"""
