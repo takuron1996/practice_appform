@@ -3,7 +3,8 @@
 from django.core.validators import RegexValidator
 from rest_framework import serializers
 
-from crm.models import Customer
+from crm.enums import UserRole
+from crm.models import Customer, User
 
 
 class SmsSerializer(serializers.Serializer):
@@ -51,3 +52,46 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = "__all__"
         read_only_fields = ("id", "created_at")
+
+
+class CreateUserSerializer(serializers.ModelSerializer):
+    """ユーザー生成用のシリアライザ"""
+
+    user_role = serializers.ChoiceField(
+        choices=[(tag.value, tag.name) for tag in UserRole]
+    )
+    # """ユーザー権限"""
+
+    class Meta:
+        model = User
+        fields = "__all__"
+        read_only_fields = (
+            "id",
+            "is_staff",
+            "is_superuser",
+            "groups",
+            "user_permissions",
+            "verified",
+        )
+
+
+class ListUserSerializer(serializers.ModelSerializer):
+    """ユーザー一覧用のシリアライザ"""
+
+    def to_representation(self, instance):
+        """groupsをidから名前に変換"""
+        ret = super(ListUserSerializer, self).to_representation(instance)
+        ret["groups"] = instance.groups.name
+        return ret
+
+    class Meta:
+        model = User
+        exclude = ("password",)
+        read_only_fields = (
+            "id",
+            "is_staff",
+            "is_superuser",
+            "groups",
+            "user_permissions",
+            "verified",
+        )
