@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register(r"", views.LoginViewSet, basename="login")
 router.register(r"", views.SmsViewSet, basename="sms")
 router.register(r"customer", views.CustomerViewSet, basename="customer")
+router.register(r"user", views.UserViewSet, basename="user")
 
 health_router = DefaultRouter()
 health_router.register(r"", views.HealthViewSet, basename="health")
