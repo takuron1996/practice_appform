@@ -6,7 +6,6 @@ from crm.injectors import DevModule, injector
 
 from .base import *
 
-
 injector.binder.install(DevModule())
 
 # ログ設定
