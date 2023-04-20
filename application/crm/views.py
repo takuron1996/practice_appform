@@ -63,10 +63,7 @@ class SmsViewSet(ViewSet):
     def sms(self, request):
         """SMSの送信処理"""
         serializer = self.serializer_class(data=request.data)
-        if not serializer.is_valid():
-            return Response(
-                serializer.errors, status=status.HTTP_400_BAD_REQUEST
-            )
+        serializer.is_valid(raise_exception=True)
         sms = injector.get(SnsWrapper)
         message_id = sms.publish_text_message(
             "+81" + serializer.validated_data["phone_number"],
@@ -223,11 +220,7 @@ class UserViewSet(
     def create(self, request, *args, **kwargs):
         """ユーザーを作成"""
         serializer = self.get_serializer_class()(data=request.data)
-        if not serializer.is_valid():
-            return Response(
-                serializer.errors, status=status.HTTP_400_BAD_REQUEST
-            )
-
+        serializer.is_valid(raise_exception=True)
         User.objects.create_user(
             name=serializer.validated_data["name"],
             employee_number=serializer.validated_data["employee_number"],
