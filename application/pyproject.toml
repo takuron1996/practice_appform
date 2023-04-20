@@ -29,7 +29,7 @@ mypy = "^0.991"
 pytest-mock = "^3.10.0"
 pytest-django = "^4.5.2"
 drf-spectacular = "^0.25.1"
-
+pytest-clarity = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -124,7 +124,7 @@ propagate = "no"
 
 # pytest.iniの設定
 [tool.pytest.ini_options]
-addopts = "-ra -p no:cacheprovider --strict-config --strict-markers"
+addopts = "-ra -p no:cacheprovider --strict-config --strict-markers -vv --diff-width=60"
 
 [tool.pytest]
 DJANGO_SETTINGS_MODULE = "application.settings.local"
