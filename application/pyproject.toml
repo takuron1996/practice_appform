@@ -126,8 +126,6 @@ propagate = "no"
 # pytest.iniの設定
 [tool.pytest.ini_options]
 addopts = "-ra -p no:cacheprovider --strict-config --strict-markers -vv --diff-width=60"
-
-[tool.pytest]
 DJANGO_SETTINGS_MODULE = "application.settings.local"
 
 # .coveragercの設定
